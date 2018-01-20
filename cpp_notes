@@ -1,0 +1,319 @@
+g++ -Wall -Wextra -Werror main.cpp
+
+======== namespaces ========
+
+namespace Foo {
+	
+	int	gl_var = 3;
+	int	f( void ) { return 4; }
+}
+
+namespace Muf = Foo;
+
+printf( "Foo::gl_var: [%d]\n", Foo:gl_var );
+
+======== stdio streams ========
+
+#include <iostream>
+
+char	buff[512];
+
+std::cout << "Hello World !" << std::endl;
+
+std::cout << "Input a word: ";
+std::cin >> buff;
+std::cout << "You entered" << buff << "cool" <<std::endl;
+
+======== class and instance ========
+
+#ifndef SAMPLE_CLASS_H
+# define SAMPLE_CLASS_H
+
+class Sample {
+	
+public:
+
+	Sample( void );
+	~Sampel( void );
+
+};
+
+#endif
+
+Sample::Sample( void ) {
+	
+	std::count << "Constructor called" << std::endl;
+	return;
+}
+
+======== member attributes and member functions ========
+
+class Sample {
+	
+public:
+
+	int foo;
+
+	Sample( void );
+	~Sampel( void );
+
+	void bar( void );
+};
+
+void Sample::bar( void ) {
+	
+	std::count << "bar function called" << std::endl;
+	return;
+}
+
+======== this ========
+
+Sample::Sample( void ) {
+	
+	std::count << "Constructor called" << std::endl;
+	this->foo = 42;
+	std::count << this->foo << std::endl;
+
+	this->bar();
+
+	return;
+}
+
+======== initialization list ========
+
+Sample2::Sample2( char p1, int p2, float p3 ) : a1(p1), a2(p2), a3(p3) {
+	
+	std::count << "Constructor called" << std::endl;
+
+	return;
+}
+
+======== const ========
+
+class Sample {
+	
+public:
+
+	int const foo;
+	void bar( void ) const;
+
+}
+
+Sample::Sample( int const f ) : foo( f ) {
+	
+	return;
+}
+
+void Sample::bar( void ) const {
+	
+	return;
+}
+
+======== visibility ========
+
+class Sample {
+	
+public:
+
+	int publicFoo;
+
+	Sample( void );
+	~Sample( void );
+
+	void publicBar( void ) const;
+
+private:
+
+	int privateFoo;
+
+	void privateBar( void ) const;
+}
+
+======== class vs struct ========
+
+class = scope private
+struct = scope public
+
+======== accessors c++ ========
+
+int Sample::getFoo( void ) const {
+	
+	return this->_foo;
+}
+
+void Sample::setFoo( int v ) {
+	
+	if (v >= 0)
+		this->_foo = v;
+
+	return;
+}
+
+======== comparisons c++ ========
+
+int compare( Sample * other ) const;
+
+int Sample::compare( Sample * other ) const {
+	
+	if ( this->_foo < other->getFoo() )
+		return -1
+}
+
+======== Non member attributes and non member functions ========
+
+public: static int getNbInst( void );
+private: static int _nbInst;
+
+int Sample::getNbInsta( void ) {
+	
+	return Sample::_nbInst;
+}
+
+int Sample::_nbInst = 0;
+
+======== Pointers to members ========
+
+Sample instance;
+Sample *instancep = &instance;
+
+int Sample:::*p = NULL;
+void (Sample::*f)( void ) const;
+
+p = &Sample::foo;
+
+instance.*p = 21;
+instancep->*p = 42;
+
+f = &Sample::bar;
+
+(instance.*f)();
+(instancep->*f)();
+
+======== New and delete ========
+
+Student	bob = Student("bfubar"); -> Sur la stack
+Student	*jim = new Student("jfubar"); -> Alloc
+delete jim;
+
+Student *students = new Student[42];
+delete [] students;
+
+======== References ========
+
+int nb = 42;
+
+int* ptrNb = &nb;
+int& refNb = nb;
+
+======== Filestream ========
+
+#include <fstream>
+
+std::ifstream ifs("numbers");
+unsigned int dst
+unsigned int dst2;
+ifs >> dst >> dst2;
+
+std::ofstream ofs("test.out");
+
+ofs << "I like trains" << std::endl;
+ofs.close();
+
+======== Surcharge de fonction ad-hoc Polymorphisme ========
+
+class Sample {
+	
+public:
+
+	Sample(void);
+	~Sample(void);
+
+	void	bar( char const c ) const;
+	void	bar( int const n ) const;
+	void	bar( float const z ) const;
+	void	bar( Sample const & i ) const;
+}
+
+======== canonical form ========
+
+class Sample {
+	
+public:
+
+	Sample( void );
+	Sample( Sample const & src );
+	~Sample( void );
+
+	Sample &	operator=( Sample const & rhs );
+};
+
+Sample::Sample( Sample const & src ) {
+	std::cout << "Copy constructor called" << std::endl;
+	*this = src;
+
+	return;
+}
+
+Sample &	Sample::operator=( Sample const & rhs ) {
+	std::cout << "Assignment operator called" << std::endl;
+
+	if (this != &rhs)
+		this->_foo = rhs.getFoo();
+
+	return *this;
+}
+
+======== Inheritance c++ ========
+
+class Cat : public Animal {
+	private:
+		int i; // Only accessible from this class
+	protected:
+		int j; // Accessible from this class and children
+	public:
+		int k; // Accessible from everyone
+};
+
+======== sub-typing polymorphism ========
+
+method = fonction membre virtuelle
+
+virtual void sayHello();
+
+======== abstract classes and interfaces ========
+
+class ACharacter {
+
+public:
+	virtual void	attack() = 0;
+}
+
+class ICoffeeMaker {
+	public:
+		virtual void	fillWaterTank();
+		virtual Icoffee* 	makeCoffee();
+}
+
+======== Exceptions ========
+
+#include <stdexcept>
+
+void test1() {
+	try {
+		if (error) {
+			throw std::exception();
+		}
+	}
+	catch (std::exception e) {
+		//Handle the error
+	}
+}
+
+======== Static cast ========
+
+int d = static_cast<int>(b)
+
+======== Dynamic cast ========
+
+Parent *b = new Parent;
+Child1 * c = dynamic_cast<Child1 *>(b);
